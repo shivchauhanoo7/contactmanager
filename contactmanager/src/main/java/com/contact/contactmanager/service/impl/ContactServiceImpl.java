@@ -1,6 +1,7 @@
 package com.contact.contactmanager.service.impl;
 
 import com.contact.contactmanager.entities.Contact;
+import com.contact.contactmanager.exception.ResourceNotFoundException;
 import com.contact.contactmanager.repository.ContactRepository;
 import com.contact.contactmanager.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,5 @@ public class ContactServiceImpl implements ContactService{
     public List<Contact> getContactbyZipCode(String zipCode) {
         return contactRepository.findByAddressZipCode(zipCode);
     }
+
 }

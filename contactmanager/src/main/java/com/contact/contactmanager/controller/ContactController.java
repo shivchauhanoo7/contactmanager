@@ -1,6 +1,7 @@
 package com.contact.contactmanager.controller;
 
 import com.contact.contactmanager.entities.Contact;
+import com.contact.contactmanager.exception.ResourceNotFoundException;
 import com.contact.contactmanager.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,15 @@ public class ContactController {
 
     @GetMapping("/{zipCode}")
     public ResponseEntity<List<Contact>> getContactbyZipCode(@PathVariable String zipCode){
-        return ResponseEntity.ok(contactService.getContactbyZipCode(zipCode));
+        try {
+            ResponseEntity<List<Contact>> contactPerson = ResponseEntity.ok(contactService.getContactbyZipCode(zipCode));
+            if(contactPerson.getBody().isEmpty()){
+                throw new ResourceNotFoundException("No Contact is found with given zipcode:"+zipCode);
+            }
+            return contactPerson;
+        }
+        catch (ResourceNotFoundException ex){
+            throw new ResourceNotFoundException(ex.getMessage());
+        }
     }
 }
